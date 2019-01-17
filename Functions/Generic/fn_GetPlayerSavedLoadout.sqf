@@ -2,7 +2,7 @@
 	Author: Hadwig
 
 	Description:
-	Execute GetPlayerSavedLoadout DLL function. Need to be executed on server (because of server-side-only dll)
+	Gets player loadout form server profileNamespace and broadcast it in missionNamespace
 
 	Parameter(s):
 	0: STRING - player SteamID
@@ -13,11 +13,5 @@
 
 params["_uid"];
 
-_gear = "Economic" callExtension format["[%1]GetPlayerSavedLoadout", _uid];
-if (_gear isEqualTo "2") then
-{
-    _gear = str (getUnitLoadout "B_Survivor_F");
-};
-
-//Return
-_gear
+_gear = profileNamespace getVariable [format["SAA_loadout_%1", _uid], str(getUnitLoadout "B_Survivor_F")];
+missionNamespace setVariable [format["SAA_loadout_%1", _uid], _gear, true];

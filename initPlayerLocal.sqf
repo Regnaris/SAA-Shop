@@ -115,33 +115,44 @@ _EH_ArsenalClose = ["ace_arsenal_displayClosed", {
 //     //diag_log format ["Aresnal Cargo: item %1 | addorremove %2 | shiftState %3", _this select 1, _this select 2, _this select 3];
 // }] call CBA_fnc_addEventHandler;
 
+
+
+/*
+// EventHandlers to display player cash on screen when inventory opened
+*/
 _EH_InventoryOpened = player addEventHandler ["InventoryOpened",
 {
     _Rsc_layer = ("ArsenalHUD" call BIS_fnc_rscLayer) cutRsc ["ArsenalCaxhTitle", "PLAIN"];
     _display = uiNamespace getVariable ["ArsenalHUD",displayNull];    // Get layer display
     _control = _display displayCtrl 7001;    // Get display control for cash text
-    _control ctrlSetText format["%1 $", cash];     // Update info in cash text with new information.
+    _uid = getPlayerUID player;
+    _cash = missionNamespace getVariable format ["SAA_cash_%1", _uid];// Get current player cash
+    diag_log format["[SAA] Cash number from inventory event handler: %1", _cash];
+    _control ctrlSetText format["%1 $", _cash];     // Update info in cash text with new information.
 }];
 
 _EH_InventoryClosed = player addEventHandler ["InventoryClosed", {
     _Rsc_layer = ("ArsenalHUD" call BIS_fnc_rscLayer) cutRsc ["Clear", "PLAIN"]; // Delete cash layer
 }];
 
+
+
 /*
  Player initialisation
 */
-[player, format ["Welcome back to Shadec | %1", name player], 50, 50, 45, 1, [], 0, true] spawn BIS_fnc_establishingShot;
+// [player, format ["Welcome back to Shadec | %1", name player], 50, 50, 45, 1, [], 0, true] spawn BIS_fnc_establishingShot;
 cash = 0;
 gearcost = 0;
 currentLoadout = [];
 currentLoadoutList = [];
 uid = getPlayerUID player;
 //pricesDB = [uid] call Shadec_fnc_db
+[uid] remoteExecCall ["Shadec_fnc_GetPlayerCash", 2];
 
 getSavedLoadout = [player, uid];
 publicVariableServer "getSavedLoadout";
 
-"loadout" addPublicVariableEventHandler {
+format ["SAA_loadout_%1", uid] addPublicVariableEventHandler {
 	_loadout = _this select 1;
     player setUnitLoadout _loadout;
     currentLoadout = _loadout;
@@ -152,7 +163,7 @@ publicVariableServer "getSavedLoadout";
     getCash = nil;
 };
 
-"cash" addPublicVariableEventHandler {
+format ["SAA_cash_%1", uid] addPublicVariableEventHandler {
 	cash = _this select 1;
 };
 
@@ -171,15 +182,7 @@ _EH_PlayerKilled = player addEventHandler ["Killed", {
 
 _EH_PlayerRespawn = player addEventHandler ["Respawn", {
 	params ["_unit", "_corpse"];
-    getSavedLoadout = [player, uid];
-    publicVariableServer "getSavedLoadout";
-    getSavedLoadout = nil;
-	//deleteVehicle _corpse; 
-}];
-
-_EH_StorageOpened = player addEventHandler ["InventoryOpened", {
-	params ["_unit", "_container"];
-    _unit = _this select 0;
-    _container = _this select 1;
-   if (name _container isEqualTo name player) then {hint "YES"};
+    _loadout = missionNamespace getVariable [format["SAA_loadout_%1", _uid], str(getUnitLoadout "B_Survivor_F")];
+    diag_log ["[SAA] Player respawned with corpse: %1", _corpse];
+    _unit setUnitLoadout _loadout;
 }];

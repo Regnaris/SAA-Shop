@@ -2,7 +2,7 @@
 	Author: Hadwig
 
 	Description:
-	Execute SetPlayerCash DLL function. Need to be executed on server (because of server-side-only dll)
+	Sets player cash in server profile namespace
 
 	Parameter(s):
 	0: STRING - player SteamID
@@ -14,7 +14,7 @@
 
 params["_uid", "_cash"];
 
-"Economic" callExtension format["[%1|%2]SetPlayerCash", _uid, _cash];
+profileNamespace setVariable [format ["SAA_cash_%1", _uid], _cash];
 
 //Return
 true

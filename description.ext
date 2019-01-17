@@ -1,4 +1,9 @@
 onLoadName = "SHADEC Economy";
+maxPlayer = 8;
+minPlayer = 1;
+
+//Configs
+#include "Configs\SAA_Items.h"
 
 //HUD definitions
 class RscTitles
@@ -52,7 +57,7 @@ class RscText {
 	text = "";
 	fixedWidth = 0;
 	shadow = 0;
-	lineSpacing = 1
+	lineSpacing = 1;
 };
 
 class CashArsenal: RscText {
@@ -138,7 +143,7 @@ class MyEdit
 	colorText[] = {0,0,1,1};
 	colorDisabled[] = {1,0,0,1}; 
 	colorBackground[] = {0,0,0,0.5}; 
-	text = "Line 1\nLine2" // how to output multiline
+	text = "Line 1\nLine2"; // how to output multiline
 };
 
 class MyDialog
@@ -218,7 +223,7 @@ class CfgRemoteExec
 {
         class Functions
         {
-                mode = 3;  //For debug. TODO: Change it later
+                mode = 2;  //For debug. TODO: Change it later
                 jip = 0;   //no functions can use jip
 				class Shadec_fnc_CompareLoadouts {allowedTargets = 2;};
 				class Shadec_fnc_GetLoadoutCost {allowedTargets = 2;};

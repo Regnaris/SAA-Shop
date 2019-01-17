@@ -33,13 +33,9 @@
 //Player connect handler
 _EH_PlayerConnected = addMissionEventHandler ["PlayerConnected",
 {
-    _pcid = _this select 0;
-    _uid = _this select 1;
-    _pname = _this select 2;
-	diag_log format ["CLIENT CONNECTED. PCID:%1 | UID:%2 | PNAME:%3", _pcid, _uid, _pname];
-    loadout = parseSimpleArray([_uid] call Shadec_fnc_GetPlayerSavedLoadout);
-    _this select 4 publicVariableClient "loadout";
-    loadout = nil;
+    params["_id", "_uid", "_name", "_jip", "_owner"];
+	diag_log format ["[SAA] CLIENT CONNECTED. UID:%2 | PNAME:%3", _uid, _name];
+    [_uid] call Shadec_fnc_GetPlayerSavedLoadout
 }];
 
 _EH_PlayerDisconnected = addMissionEventHandler ["HandleDisconnect",
@@ -72,4 +68,4 @@ arsenalItems = [];
 // Arsenal Init
 diag_log format ["listArsenal: %1", listArsenal];
 diag_log format ["Arsenal: %1", arsenalItems];
-[Arsenal1, [arsenalItems], true] call ace_arsenal_fnc_initBox;
+[Arsenal1, arsenalItems, true] call ace_arsenal_fnc_initBox;

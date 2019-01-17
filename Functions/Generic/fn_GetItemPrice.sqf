@@ -2,7 +2,7 @@
 	Author: Hadwig
 
 	Description:
-	Execute GetItemPrice DLL function. Need to be executed on server (because of server-side-only dll)
+	Gets item price from misson config
 
 	Parameter(s):
 	0: STRING - item class name
@@ -12,9 +12,8 @@
 */
 
 params["_item", "_uid"]; 
-_price = "Economic" callExtension format["[%1|%2]GetItemPrice", _item, _uid];
 
-// Сделать загрузку всех цен на сервер при инициализации.
+_price = ("SAA_Items" >> (_item) >> "price") call BIS_fnc_getCfgData;
 
 //Return 
 _price
