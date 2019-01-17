@@ -1,0 +1,233 @@
+onLoadName = "SHADEC Economy";
+
+//HUD definitions
+class RscTitles
+{
+	class ArsenalCaxhTitle
+	{    
+		idd = 7000;
+		duration = 9999;
+        fadeIn = 0;
+        fadeOut = 0;
+        onLoad = "uiNamespace setVariable ['ArsenalHUD',_this select 0]";
+        onUnload = "uiNamespace setVariable ['ArsenalHUD',displayNull]";
+        onDestroy = "uiNamespace setVariable ['ArsenalHUD',displayNull]";
+        class controlsBackground
+		{
+			class MoneyText
+			{    
+				idc = 7001;
+				type = 0;
+				style = "18";
+                x = 0.5;
+				y = 1;
+				w = 0.4;
+				h = 0.15;
+				font = "EtelkaNarrowMediumPro";
+				sizeEx = 0.07;
+				colorBackground[] = {0,0,0,0.5};
+				colorText[] = {1,1,1,1};
+				text = "Not loaded";
+                lineSpacing = 1;
+			};  
+		};	
+	};
+    class Clear
+    {
+        idd = -1;
+        duration = 0;
+    };
+};
+
+class RscText {
+	access = 0;
+	type = CT_STATIC;
+	idc = -1;
+	style = ST_BACKGROUND + ST_CENTER;
+	w = 0.1; h = 0.05;
+	font = "TahomaB";
+	sizeEx = 0.04;
+	colorBackground[] = {0,0,0,0};
+	colorText[] = {1,1,1,1};
+	text = "";
+	fixedWidth = 0;
+	shadow = 0;
+	lineSpacing = 1
+};
+
+class CashArsenal: RscText {
+	text = "Cash";
+    colorBackground[] = {0,0,0,0.4};
+    x = 0;   y = safeZoneY + 0.01;   w = 0.30;   h = 0.07;
+    colorText[] = {1,1,1,1};
+};
+
+class TotalCostArsenal: RscText {
+	text = "TotalCost";
+	colorBackground[] = {0,1,0,0.4};
+	x = 0;   y = safeZoneY + 0.09;   w = 0.30;   h = 0.07;
+    colorText[] = {1,1,1,1};
+};
+
+class BuyCostArsenal: RscText {
+	text = "BuyCost";
+	colorBackground[] = {0,0,0,0.4};
+    x = 0;   y = safeZoneY + 0.17;   w = 0.30;   h = 0.07;
+    colorText[] = {1,1,1,1};
+};
+
+class SellCostArsenal: RscText {
+	text = "SellCost";
+	colorBackground[] = {0,0,0,0.4};
+	x = 0;   y = safeZoneY + 0.25;   w = 0.30;   h = 0.07;
+    colorText[] = {1,1,1,1};
+};
+
+class RscButton
+{
+	access = 0;
+	type = CT_BUTTON;
+	style = ST_LEFT;
+	x = 0; y = 0; w = 0.3; h = 0.1;
+	text = "";
+	font = "TahomaB";
+	sizeEx = 0.04;
+	colorText[] = {1,1,1,1};
+    colorDisabled[] = {1,1,1,0.85};
+    colorBackground[] = {0,0,0,1};
+    colorBackgroundDisabled[] = {0,0,0,0};
+    colorBackgroundActive[] = {1,1,1,0.85};
+    colorFocused[] = {1,1,1,1};
+    colorShadow[] = {0.023529,0,0.0313725,1};
+    colorBorder[] = {0.023529,0,0.0313725,1};
+	offsetX = 0.004;
+	offsetY = 0.004;
+	offsetPressedX = 0.002;
+	offsetPressedY = 0.002;
+	shadow = 0;
+	borderSize = 0.008;
+	soundEnter[] = {"",0.1,1};
+	soundPush[] = {"",0.1,1};
+	soundClick[] = {"",0.1,1};
+	soundEscape[] = {"",0.1,1};
+};
+
+class BuyAccept: RscButton {
+	idc = 1;
+	x = 0.31;   y = safeZoneY + 0.09;   w = 0.08;   h = 0.07;
+	text = "Buy";
+	default = false;
+};
+
+class MyEdit
+{
+	idc = -1;
+	type = CT_EDIT;
+	style = "16 + 512"; // multi line + no border
+	x = 0;
+	y = 0;
+	h = 0.2;
+	w = 1;
+	font = "PuristaMedium";
+	sizeEx = 0.04;
+	autocomplete = "";
+	canModify = true; 
+	maxChars = 100; 
+	forceDrawCaret = false;
+	colorSelection[] = {0,1,0,1};
+	colorText[] = {0,0,1,1};
+	colorDisabled[] = {1,0,0,1}; 
+	colorBackground[] = {0,0,0,0.5}; 
+	text = "Line 1\nLine2" // how to output multiline
+};
+
+class MyDialog
+{
+	idd = -1;
+
+	class controls
+	{
+		class Enabled: MyEdit
+		{
+			style = 16;
+			colorBackground[] = {0,0,0,0};
+		};
+
+		class Disabled: MyEdit
+		{
+			onLoad = "_this select 0 ctrlEnable false";
+			y = 0.3;
+			maxChars = 18;
+			forceDrawCaret = true;
+		};
+	};
+};
+
+class CheckBoxes
+{
+	idc = -1;
+	type = 7; // CT_CHECKBOXES
+	style = 2; // ST_CENTER
+	x = 0.25; y = 0.25;	w = 0.5; h = 0.5;
+	colorSelectedBg[] = {0, 0, 0, 0.2}; // selected item bg color
+	colorText[] = {0, 1, 0, 1}; // checkbox unchecked color
+	colorTextSelect[] = {1, 0, 0, 1}; // checkbox checked color
+	colorBackground[] = {0, 0, 1, 0.3}; // control generic BG color
+	font = "RobotoCondensed";
+	sizeEx = 0.04;
+	onCheckBoxesSelChanged = "buyCheck = _this select 2";
+	columns = 1;
+	rows = 1;
+	strings[] = {"Buy"};
+	checked_strings[] = {"Cancel"};
+};
+
+class BuyCheck: CheckBoxes {
+	idc = 105;
+	x = 0.31;   y = safeZoneY + 0.09;   w = 0.15;   h = 0.07;
+	colorText[] = {1, 1, 1, 1};
+	colorTextSelect[] = {1, 0, 0, 1};
+	colorBackground[] = {0, 0, 0, 0.5};
+	colorSelectedBg[] = {0, 0, 0, 0.5};
+	strings[] = {"Buy on exit"};
+	checked_strings[] = {"Cancel"};
+};
+
+//Function library definitions
+class CfgFunctions
+{
+    class Shadec
+    {
+        class Generic
+        {
+			class CompareLoadouts {};
+			class GetLoadoutCost {};
+            class GetPlayerCash {};
+            class SetPlayerCash {};
+            class GetPlayerSavedLoadout {};
+            class SetPlayerSavedLoadout {};
+            class GetItemPrice {};
+            class NewGearPrice {};
+            class SaveString {};
+        };
+    };
+};
+
+//Remote execution config
+class CfgRemoteExec
+{
+        class Functions
+        {
+                mode = 3;  //For debug. TODO: Change it later
+                jip = 0;   //no functions can use jip
+				class Shadec_fnc_CompareLoadouts {allowedTargets = 2;};
+				class Shadec_fnc_GetLoadoutCost {allowedTargets = 2;};
+                class Shadec_fnc_GetPlayerCash {allowedTargets = 2;};
+                class Shadec_fnc_SetPlayerCash {allowedTargets = 2;};
+                class Shadec_fnc_GetPlayerSavedLoadout {allowedTargets = 2;};
+                class Shadec_fnc_SetPlayerSavedLoadout {allowedTargets = 2;};
+                class Shadec_fnc_GetItemPrice {allowedTargets = 2;};
+                class Shadec_fnc_NewGearPrice {allowedTargets = 2;};
+                class Shadec_fnc_SaveString {allowedTargets = 2;};
+        };
+};
